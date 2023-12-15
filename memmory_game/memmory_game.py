@@ -24,6 +24,17 @@ class State(xt.State):
 
         self.count += 1
         self.track.append((emoji_type,emoji))
+    
+    def reset_game(self):
+        """Reset the game state and boart"""
+        self.emoji_list = [[i, "0%"] for i in range(36)]
+        self.count = 0
+        self.track = []
+        self.score = 0
+        self.result = None 
+        self.emojis = game.emoji[: game.stage * 2] * game.stage * 2
+        random.shuffle(self.emojis)
+        game.create_board()
 
     async def check_emoji(self):
         if self.count == 2:
@@ -46,6 +57,7 @@ class State(xt.State):
             self.count = 0
             self.track = []
         await asyncio.sleep(2)
+        
 
 class MemoryMatch:
     def __init__(self):
@@ -53,7 +65,7 @@ class MemoryMatch:
         self.emoji: list = ["🎅","🎁","🥳","💃","🏃","💪","🏋️","🏅","🏆","🏵️","🌺","🦋"]
         self.game_grid = xt.vstack(spacing = "15px")
         self.create_board()
-
+    
     def create_board(self):
         # This will pair the emojis
         emojis = self.emoji[: self.stage * 2] * self.stage * 2
@@ -108,6 +120,17 @@ def index() -> xt.Component:
            xt.spacer(),
            game.game_grid,
            xt.spacer(),
+           xt.button(
+                "Reset Game",
+                on_click=lambda:State.reset_game(),
+                width="150px",
+                height="40px",
+                margin="15px",
+                color_scheme = "teal",
+                color="white",
+                font_size="16px",
+                cursor="pointer",
+            ),
            xt.text(
                State.result,
                font_size = "25px",
@@ -126,6 +149,7 @@ def index() -> xt.Component:
        overlay = "hidden",
        place_items = "center",
     )
+
 
 
 # Add state and page to the app.

@@ -32,8 +32,7 @@ class State(xt.State):
         self.track = []
         self.score = 0
         self.result = None 
-        self.emojis = game.emoji[: game.stage * 2] * game.stage * 2
-        random.shuffle(self.emojis)
+        
         game.create_board()
 
     async def check_emoji(self):
@@ -62,7 +61,7 @@ class State(xt.State):
 class MemoryMatch:
     def __init__(self):
         self.stage: int = 2
-        self.emoji: list = ["🎅","🎁","🥳","💃","🏃","💪","🏋️","🏅","🏆","🏵️","🌺","🦋"]
+        self.emoji: list = ["🎅","🎁","🥳","💃"]
         self.game_grid = xt.vstack(spacing = "15px")
         self.create_board()
     
